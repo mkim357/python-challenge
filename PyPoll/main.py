@@ -1,9 +1,10 @@
 # $ /usr/bin/python3 ./PyPoll/main.py
 
+import os
 import csv
 
 # define path to CSV file
-file_path = '/mnt/data/election_data.csv'
+file_path = 'PyPoll/Resources/election_data.csv'
 
 # initialize variables
 total_votes = 0
@@ -29,7 +30,7 @@ with open(file_path, "r") as csvfile:
         candidates[candidate] += 1
 
 # calculate the percentage of votes each candidate won
-candidate_percentages = {candidates: (votes / total_votes) * 100 for candidate, votes in candidates.items()}
+candidate_percentages = {candidate: (votes / total_votes) * 100 for candidate, votes in candidates.items()}
 
 # determine winner of election
 winner = max(candidates, key=candidates.get)
@@ -42,7 +43,7 @@ def generate_output():
         f"Total Votes: {total_votes}\n"
         "-------------------------\n"
     )
-    for candidate in candidate_list:
+    for candidate in candidates_list:
         output += f"{candidate}: {candidate_percentages[candidate]:.3f}% ({candidates[candidate]})\n"
     output += (
         "-------------------------\n"
@@ -55,8 +56,8 @@ def generate_output():
 print(generate_output())
 
 # Write the analysis to a text file
-output_file_path = os.path.join("PyPoll", "analysis", "election_results.txt")
+output_file_path = os.path.join("PyPoll", "analysis")
 os.makedirs(os.path.dirname(output_file_path), exist_ok=True)
-
+output_file_path = "PyPoll/analysis.txt"
 with open(output_file_path, "w") as txtfile:
     txtfile.write(generate_output())
